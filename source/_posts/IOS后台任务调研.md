@@ -1,5 +1,6 @@
-<center># iOS7 MultiTasking</center>
-
+---
+title: iOS7 MultiTasking
+---
 本文主要结合Apple一系列官方文档、WWDC、以及相关博文的学习，并配合自己的一系列测试，对iOS7之后的多任务进行了总结。在了解iOS的多任务方式之前，对于iOS的应用程序的生命周期也需要有个清晰的认识。所以，文章将按照如下章节来介绍iOS7及其后系统多任务的新特性：
 
 * iOS应用程序运行状态
@@ -78,7 +79,7 @@
 
 **后台执行有限时长的任务**，这是自iOS4以来就存在的一种后台模式。严格上来说，它并不是真正意义上的后台模式。它只是UIApplication提供的一个API，通过此API我们可以实现后台任务执行的一种方式:
 
-```
+``` cpp
 -(UIBackgroundTaskIdentifier)beginBackgroundTaskWithName:expirationHandler:
 or
 -(UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:
