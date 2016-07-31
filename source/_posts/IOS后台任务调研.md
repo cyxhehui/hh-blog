@@ -19,7 +19,7 @@ title: iOS7 MultiTasking
 
 下图是应用程序各状态的变化图：
 
-<center>![](res/iOS应用程序运行状态.png)</center>
+<center>![](http://7xqcm1.com1.z0.glb.clouddn.com/NSURLSession-Tasks.png)</center>
 
 对应不同状态切换时，会触发delegate对象对应的方法来响应app的状态改变。了解这些方法，在app状态发生转换时，可以更合理地选择相应的方法，执行我们期待的操作。
 
@@ -48,11 +48,11 @@ title: iOS7 MultiTasking
 
 ## iOSx多任务发展
 
-1、IOS 4之前: app并不存在后台的概念，只要Home键按下，app就被干掉。
+1、iOS4之前: app并不存在后台的概念，只要Home键按下，app就被干掉。
 
-2、IOS 4: 引入了后台和多任务，但实际上是伪多任务。它仅支持少数几类服务在通过注册后可以真正在后台运行，而一般的app后台并不能执行自己的代码。
+2、iOS4: 引入了后台和多任务，但实际上是伪多任务。它仅支持少数几类服务在通过注册后可以真正在后台运行，而一般的app后台并不能执行自己的代码。
 
-3、IOS 5、6: 能后台运行的服务种类增加，但后台的本质没有变化
+3、IOS5、6: 能后台运行的服务种类增加，但后台的本质没有变化
 	
 总结下来，iOS7之前，系统所接受的应用多任务大致分为以下几种:
 
@@ -88,11 +88,11 @@ or
 
 在iOS6和之前的系统中，系统在用户退出应用后，如果应用正在执行后台任务的话，即使用户锁屏或设备进入休眠状态，系统都会保持活跃的状态直到后台任务完成或者超时以后（文档上都说此时间大概10min，对于此时间iOS7之前的系统我并未测试），才进入真正的低功耗休眠状态。如下图所示：
 
-<center>![](res/ios-multitask-ios6.png)</center>
+<center>![](http://7xqcm1.com1.z0.glb.clouddn.com/ios-multitask-ios6.png)</center>
 
-而在iOS7中，后台任务的处理方式发生了改变，系统将在用户锁屛后，尽快让设备进入休眠状态，以节省电力，这时后台任务是被暂停的。之后设备在特定时间进行系统应用的操作被唤醒时（如检查邮件、来电等），之前暂停的后台任务将一起进行。也即，系统并不会专门为第三方应用保持设备处于活跃的状态。如下图所示：
+而自从iOS7以来，后台任务的处理方式发生了改变。系统将在用户锁屛后，尽快让设备进入休眠状态，以节省电力，这时后台任务是被暂停的。之后设备在特定时间进行系统应用的操作被唤醒时（如检查邮件、来电等），之前暂停的后台任务将一起进行。也即，系统并不会专门为第三方应用保持设备处于活跃的状态。如下图所示：
 
-<center>![](res/ios-multitask-ios7.png)</center>
+<center>![](http://7xqcm1.com1.z0.glb.clouddn.com/ios-multitask-ios7.png)</center>
 
 <font color="red">iOS7之后系统，对于后台任务处理方式的这种变化，是需要实际验证的。然而，我通过一些Demo并未证实。So，求证~~</font>
 
@@ -210,7 +210,7 @@ or
 
 iOS7之前，诸如新闻、天气、社交应用等，此类应用有一个共同的缺点，即每次加载应用的时候，用户都需要等待应用从服务器获取最新数据。这一点如果体现在弱网环境下，就尤为明显了。
 
-自iOS7以来，加入了新的后台模式，**后台获取**。系统会在后台不时的唤醒应用，获取最新的数据刷新UI。这样在用户打开应用的时候，最新的内容将已然呈现在用户眼前，而省去了所有的加载过程。后台获取是在应用程序挂起之前的30s时间执行工作的，因此并不适用于CPU频繁工作或者长时间运行任务，更适合于处理长时间运行的网络请求队列，或执行快速的内容更新等。
+自iOS7以来，加入了新的后台模式，**后台获取**。系统会在后台以一定的时间间隔来唤醒应用，获取最新的数据，刷新UI。这样在用户打开应用的时候，最新的内容将已然呈现在用户眼前，而省去了所有的加载过程。后台获取是在应用程序挂起之前的30s时间执行工作的，因此并不适用于CPU频繁工作或者长时间运行任务，更适合于处理长时间运行的网络请求队列，或执行快速的内容更新等。
 
 另外，系统执行获取会结合应用设置以及用户行为来给出一个合理的时间，这是一个自学习的过程。比如用户每天12点会刷一下微博，只要这个习惯持续三四天，系统就会将此时间调整到12点之前一点，这样每次打开应用都直接有最新内容的同时，也节省了电量和流量。
 
@@ -219,7 +219,7 @@ iOS7之前，诸如新闻、天气、社交应用等，此类应用有一个共�
 1. 启用Background Fetch模式
 
  如下图，打开Capabilities标签中设置Background Modes选项，勾选上Background Fetch。
- ![](res/Background_Fetch_Config)
+ ![](http://7xqcm1.com1.z0.glb.clouddn.com/Background_Fetch_Config)
  
 2. 实例设置获取间隔
 
@@ -239,7 +239,7 @@ Fetch Interval，是指系统唤醒应用并允许它加载数据的最低时间
 		UIApplicationBackgroundFetchIntervalMinimum：这个值会要求系统尽可能频繁地去管理应用什么时候应该被唤醒
 		UIApplicationBackgroundFetchIntervalNever：这是系统默认的设置，表示永远不去后台获取。
  
- 但是，后台获取越频繁，占用的资源就越多。iOS有一套自我保护的机制，会限制访问API过于频繁的应用。而且后台获取会导致电池消耗地过快，所以在设置自定义间隔的时候需谨慎。
+ 但是，后台获取越频繁，占用的资源就越多。iOS有一套自我保护的机制，会限制访问此API过于频繁的应用。而且后台获取会导致电池消耗地过快，所以在设置自定义间隔的时候需谨慎。
 		
 3. 实现后台获取代码并通知系统
 	
@@ -250,7 +250,8 @@ Fetch Interval，是指系统唤醒应用并允许它加载数据的最低时间
 	
 	```
 系统在执行Fetch的时候会唤醒后台应用并执行此方法，我们只需要在此方法中完成获取工作，刷新UI，并通知系统fetch结束即可。同样，对于此API的使用也有一些注意点：
-	* 系统提供的fetch时间最多30s(简单测试下来，大概也是这个时间），并非一个确定值，因此fetch只适合做一些简单的数据下载工作。
+	* 系统提供的fetch时间最多30s(简单测试下来，大概也是这个时间），
+因此fetch只适合做一些简单的数据下载工作。
 	* 当完成了网络请求和界面更新后，需要尽快执行completion handler来报告系统，系统会及时将app挂起，同时会更新页面快照。这样用户在应用间切换时，就可以看到新内容了。但是如果超过30s，系统没有收completionHandler的通知，则会kill掉应用。
 	* 系统会根据completeHandler的调用时间评估Apps后台下载所耗电量和流量，选择分配后台获取的机会给不同Apps，从而平衡不同Apps和系统自身的需求（整体感知，没有细测）。
 	* 一旦completion handler block被调用后，系统会利用剩余时间去计算后台下载所消耗的电量和流量。如果App下载数据量小而快，在下次获取后台fetch的时间可能性能更大些。反之，对于此类Apps，下载时间所花时间越长，或者通过completion handler block告知fetch结束，但实际上没有做任务下载相关的工作的，在下次获取后台fetch的机会就稍逊。
@@ -346,7 +347,7 @@ Fetch Interval，是指系统唤醒应用并允许它加载数据的最低时间
   
   对于前者，我们可以新建一个Scheme来专门调度从后台启动。相关配置如下图：
   
-  ![](res/Background-fetch-config.png)
+  ![](http://7xqcm1.com1.z0.glb.clouddn.com/Background-fetch-config.png)
   
   点击Product->Scheme->Edit Scheme，在编辑Scheme的窗口中，按下Duplicate Scheme按钮复制一个当前方案，然后在新Scheme的option中将Background Fetch打上勾。从这个Scheme来运行应用时，应用将不会直接启动切入前台，而是调用后台获取部分代码并更新UI，这样再点击图标进入应用时，就可以看到最新数据和更新好的UI了。
   
@@ -359,8 +360,8 @@ Fetch Interval，是指系统唤醒应用并允许它加载数据的最低时间
 首先我们来看看使用Background Fetch与不使用其效果对比图：
 
 <center>
-<left><img src="res/background_fetch_refresh.png" width = "300" height = "500" alt="前台加载" />
-<right><img src="res/background_fetch.png" width = "300" height = "500" alt="后台获取" />
+<left><img src="http://7xqcm1.com1.z0.glb.clouddn.com/background_fetch_refresh.png" width = "300" height = "500" alt="前台加载" />
+<right><img src="http://7xqcm1.com1.z0.glb.clouddn.com/background_fetch.png" width = "300" height = "500" alt="后台获取" />
 </center>
 
 左图是直接前台加载的效果，如果是弱网环境下，转菊花的时间就会越久。右图则是经过后台获取后，直接进入应用的效果的。下面通过不同的case，验证和总结Background Fetch的能力。
@@ -402,7 +403,7 @@ Remote Notification(即PUSH系统）主要由4部分构成:
 
 其中，APNS是Remote Notification的核心部分，它是苹果所提供的一套服务，用于传递信息给ios(watchOS, tvOS, OS X)等设备。推送消息的传输路径如下图：
 
-![](res/Push_Message_Transfer_Path.png)
+![](http://7xqcm1.com1.z0.glb.clouddn.com/Push_Message_Transfer_Path.png)
 
 >
 我们的设备联网时（无论是蜂窝网络或是Wi-Fi)都会与苹果的APNS服务器建立一个<font color="red">长连接</font>，当Provider推送一条通知的时候，它是先推送到苹果的APNS服务器上面，而苹果的APNS服务器再通过与设备建立的长连接进而把通知推送到我们的设备上。当设备处于非联网状态的时候，APNS服务器会保留Provider所推送的最后一条通知，设备转换为联网状态时，APNS会把其保留的最后一条通知推送给我们的设备；如果设备长时间处于非联网的状态下，那么APNS服务器为其保存的最后一条通知也会丢失。
@@ -413,15 +414,15 @@ Device Token简单理解就是包含了设备信息和应用信息（设备的UU
 
 >当一个App注册接收远程通知的时候，系统会发送请求到APNS服务器，APNS服务器收到此请求后会根据请求所带的key值生成一个独一无二的value值也就是所谓的deviceToken，APNS服务器会把此deviceToken包装成一个NSData对象发送到对应请求的App上。此deviceToken是我们的Provide(server)在给我们的设备推送通知的时候，必须包含的内容。所以App在收到deviceToken后，需要把它发送给我们的服务器。
 
-![](res/Device_Token_Manager.png)
+![](http://7xqcm1.com1.z0.glb.clouddn.com/Device_Token_Manager.png)
 
 **3、Provider对Notification的生成**
 
 Provider生成notification，对于每一个notification都会生成对应的payload(后面会详细介绍这一部分），并将其附加到http request中，发送给APNS server。APNS server会将些消息转发给对应的device，最后通过os将些notification转发到对应的App。自2015年7月份后，Apple更新了APNS的协议，基于HTTP2.0协议以及JSON数据传输，而在此之前，APNS是基于TLS socket连接完成通信过程的。简单地给出APNS新老通信协议的对比：
 
 <center>
-<left><img src="res/APNS_HTTP_2_Protocol.png" width = "300" height = "500" alt="前台加载" />
-<right><img src="res/APNS_Binary_Protocol.jpeg" width = "300" height = "500" alt="后台获取" />
+<left><img src="http://7xqcm1.com1.z0.glb.clouddn.com/APNS_HTTP_2_Protocol.png" width = "300" height = "500" alt="前台加载" />
+<right><img src="http://7xqcm1.com1.z0.glb.clouddn.com/APNS_Binary_Protocol.jpeg" width = "300" height = "500" alt="后台获取" />
 </center>
 
 戳->[详细请看](https://dblog.laulkar.com/http2-protocol-for-apns.html)
@@ -438,7 +439,7 @@ Provider生成notification，对于每一个notification都会生成对应的pay
 	* 用户可以收到Notification，但是只能进入应用之后才能响应push，获取数据，更新UI
 	
 	如下图所示：	
-	<center><img src="res/iOS6_Push.png" width = "400" height = "400" alt="前台加载" /></center>
+	<center><img src="http://7xqcm1.com1.z0.glb.clouddn.com/iOS6_Push.png" width = "400" height = "400" alt="前台加载" /></center>
 
 	iOS7之前的Remote Notification与没有Background Fetch时获取数据刷新的问题是一样，用户进入应用后，必须等待数据加载的过程。
 	
@@ -455,7 +456,7 @@ Provider生成notification，对于每一个notification都会生成对应的pay
 	关于这两个方法的区别会在后面介绍。
 	下图是iOS7之后，Remote Notification组件关系图。
 	
-   <center><img src="res/iOS7_Push.png" width = "400" height = "400" alt="后台获取" /></center>
+   <center><img src="http://7xqcm1.com1.z0.glb.clouddn.com/iOS7_Push.png" width = "400" height = "400" alt="后台获取" /></center>
 	
 	* Remote Notification也可以做到完全的Silent模式，在没有提醒消息或任何声音的情况下，只去更新应用界面或者触发后台工作。然后可以在完成下载或处理完更新内容后，发送一条本地通知。通过用户进入App。这个主要通过Payload去设置就可以实现，后面**使用方法**里会提到。
 	
@@ -474,7 +475,7 @@ Provider生成notification，对于每一个notification都会生成对应的pay
 	
 	如下图直接使用Capabilities配置
 	
-	<center><left><img src="res/Remote-Notification-config.png" width = "700" height = "400" alt="Push配置" /></center>
+	<center><left><img src="http://7xqcm1.com1.z0.glb.clouddn.com/Remote-Notification-config.png" width = "700" height = "400" alt="Push配置" /></center>
 	
 3. 更改推送的payload
 	
@@ -959,12 +960,7 @@ So，不同于前面几种后台模式，**Background Transfer Service**通过�
 
 ##总结
 
-iOS7以来，强大的多任务和网络API为现有应用和新应用开启了一系列全新的可能性。如果你的应用程序可以从进程外的网络传输和数据中获益，那么尽情地使用这些美妙的API。一般情况下，你可以就像你的应用正在前台运行那样去实现后台传输，并进行适当的界面更新，而这里绝大多数的工作都已经为你完成了。
-
-* 使用适当的新 API 来为你的应用程序提供内容。
-* 尽可能早地调用 completion handler 以提高效率。
-* 让 completion handler 为应用程序更新界面快照
-
+iOS7以来，强大的多任务和网络API为现有应用和新应用开启了一系列全新的可能性。通过BackgroundTask，我们可以像系统申请更多的时间在后台运行任务；通过Background Fetch和Push，也使得应用启动无需等待数据更新加载成为可能；而Background Transfer Service，通过NSURLSession更好地帮我们实现任何传输任务在后台自由执行。在使用过程中，我们只需要根据需求合理地选择一种或多种后台模式，共同服务于我们的APP，就可以带来不一样的用户体验！
 
 ##参考文档
 [Background Execution](https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html)
